@@ -6,6 +6,7 @@ using System.IO;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
+using System.Linq;
 
 namespace ScottPlot.WinUI;
 
@@ -35,7 +36,20 @@ public class WinUIPlotMenu : IPlotMenu
             OnInvoke = CopyImageToClipboard,
         };
 
-        return new ContextMenuItem[] { saveImage, copyImage };
+        ContextMenuItem separator = new()
+        {
+            IsSeparator = true
+        };
+
+        ContextMenuItem autoAxis = new()
+        {
+            Label = "Zoom to Fit Data",
+            OnInvoke = ZoomToFitData,
+        };
+
+        return (ThisControl.Plot.Axes.Rules != null && ThisControl.Plot.Axes.Rules.Any())
+            ? new ContextMenuItem[] { saveImage, copyImage }
+            : new ContextMenuItem[] { saveImage, copyImage, separator, autoAxis };
     }
 
     public MenuFlyout GetContextMenu(IPlotControl plotControl)
@@ -100,6 +114,12 @@ public class WinUIPlotMenu : IPlotMenu
         content.SetBitmap(RandomAccessStreamReference.CreateFromStream(stream));
 
         Clipboard.SetContent(content);
+    }
+
+    public void ZoomToFitData(IPlotControl control)
+    {
+        control.Plot.Axes.AutoScale();
+        control.Refresh();
     }
 
     public void ShowContextMenu(Pixel pixel)
