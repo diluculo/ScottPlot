@@ -8,5 +8,115 @@
     xmlns:ScottPlot="using:ScottPlot.WinUI"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <ScottPlot:WinUIPlot Name="WinUIPlot" />
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Settings Panel -->
+        <Border             
+            Grid.Column="0" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
+            BorderThickness="0,0,1,0" Padding="20">
+
+            <StackPanel Spacing="20">
+
+                <!-- Title -->
+                <TextBlock 
+                    Text="Plot Settings" 
+                    FontSize="18" 
+                    FontWeight="SemiBold"/>
+
+                <!-- Background Settings -->
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Background" FontWeight="Medium"/>
+                    <CheckBox 
+                        x:Name="TransparentBackgroundCheckBox"
+                        Content="Transparent Background"
+                        IsChecked="True"
+                        Checked="OnBackgroundSettingChanged"
+                        Unchecked="OnBackgroundSettingChanged"/>
+                    <TextBlock 
+                        Text="When unchecked, uses white background" 
+                        FontSize="11" 
+                        Foreground="Gray"
+                        TextWrapping="Wrap"/>
+                </StackPanel>
+
+                <!-- Axis Rule Settings -->
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Axis Rule" FontWeight="Medium"/>
+                    <RadioButton 
+                        x:Name="NoRuleRadioButton"
+                        Content="None (Clear Axis Rules)"
+                        GroupName="AxisRule"
+                        IsChecked="True"
+                        Checked="OnAxisRuleChanged"/>
+                    <RadioButton 
+                        x:Name="SquareRuleRadioButton"
+                        Content="Square Zoom Out"
+                        GroupName="AxisRule"
+                        Checked="OnAxisRuleChanged"/>
+                    <RadioButton 
+                        x:Name="SquarePreserveXRadioButton"
+                        Content="Square Preserve X"
+                        GroupName="AxisRule"
+                        Checked="OnAxisRuleChanged"/>
+                    <RadioButton 
+                        x:Name="SquarePreserveYRadioButton"
+                        Content="Square Preserve Y"
+                        GroupName="AxisRule"
+                        Checked="OnAxisRuleChanged"/>
+                    <RadioButton 
+                        x:Name="AutoSquareRadioButton"
+                        Content="Auto Square"
+                        GroupName="AxisRule"
+                        Checked="OnAxisRuleChanged"/>
+
+                    <TextBlock 
+                        Text="SquarePreserveX: Maintains X-axis scale, adjusts Y-axis" 
+                        FontSize="11" 
+                        Foreground="Gray"
+                        TextWrapping="Wrap"
+                        Margin="0,5,0,0"/>
+                    <TextBlock 
+                        Text="AutoSquareRule: AutoScale + Square combined" 
+                        FontSize="11" 
+                        Foreground="Gray"
+                        TextWrapping="Wrap"/>
+                </StackPanel>
+
+                <!-- Actions -->
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Actions" FontWeight="Medium"/>
+                    <Button 
+                        x:Name="AutoScaleButton"
+                        Content="Auto Scale"
+                        HorizontalAlignment="Stretch"
+                        Click="OnAutoScaleClick"/>
+                    <Button 
+                        x:Name="ReapplyRuleButton"
+                        Content="Re-apply Axis Rule"
+                        HorizontalAlignment="Stretch"
+                        Click="OnReapplyRuleClick"/>
+                    <Button 
+                        x:Name="ToggleSizeButton"
+                        Content="Toggle Plot Size"
+                        HorizontalAlignment="Stretch"
+                        Click="OnToggleSizeClick"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- Right Plot Area -->
+        <Grid Grid.Column="1" Margin="20">
+            <ScottPlot:WinUIPlot
+                x:Name="PlotControl" 
+                Loaded="OnPlotControlLoaded"/>
+        </Grid>
+    </Grid>
+    
 </Page>
